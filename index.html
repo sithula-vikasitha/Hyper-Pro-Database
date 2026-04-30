@@ -1,183 +1,756 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta name="google-site-verification" content="AioHky6gBYFTKoXFnESEp7ri323X5lvvZAtSQ48WSLM" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hyper Pro Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="google-site-verification" content="AioHky6gBYFTKoXFnESEp7ri323X5lvvZAtSQ48WSLM" />
+
+    <!-- SEO Optimization for 'hyper pro database' -->
+    <meta name="description"
+        content="Hyper Pro Database - The ultimate professional database and workspace for managing your quick links, web shortcuts, and personal notes securely. Access the best hyper pro database online.">
+    <meta name="keywords"
+        content="hyper pro database, hyper pro database system, hyper pro dashboard, secure database, link manager, notes database, online workspace, productivity tool">
+    <meta name="author" content="Sithula Vikasitha">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph for better sharing and SEO -->
+    <meta property="og:title" content="Hyper Pro Database | Secure Links & Notes">
+    <meta property="og:description"
+        content="The ultimate professional database and workspace for managing your quick links, web shortcuts, and personal notes securely.">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <title>Hyper Pro Database</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        
-        body { 
-            background: #000; 
-            color: white; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #000;
+            color: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            /* --- Background Image Style --- */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('background.jpg');
-            background-size: cover;
-            background-position: center;
+            /* Rich Dark Background */
+            background-image: radial-gradient(circle at top center, #0f172a 0%, #000000 80%);
             background-attachment: fixed;
-            background-repeat: no-repeat;
         }
 
-        /* --- Background Video Style (Kept but hidden/secondary to background.jpg) --- */
-        #bgVideo {
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* --- Loading Interface --- */
+        #pageLoader {
             position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            filter: brightness(45%);
-            display: none; /* Hidden to prioritize the background image */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.4s ease;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.05);
+            border-top: 4px solid #3b82f6;
+            border-right: 4px solid #2dd4bf;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loader-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            background: linear-gradient(45deg, #3b82f6, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* --- Login Overlay --- */
-        #loginOverlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.8); 
-            display: flex; justify-content: center; align-items: center; z-index: 1000; 
-            backdrop-filter: blur(10px);
+        #loginOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            transition: opacity 0.3s ease;
         }
-        .login-box { 
-            background: rgba(255, 255, 255, 0.1); 
-            padding: 40px; border-radius: 20px; text-align: center; 
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 320px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 340px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-        .login-box input { 
-            width: 100%; padding: 12px; margin-bottom: 20px; 
-            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px; color: white; font-size: 20px; text-align: center; outline: none;
+
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            outline: none;
+            transition: 0.2s;
         }
-        .login-box button { 
-            background: linear-gradient(45deg, #3b82f6, #2dd4bf); 
-            color: white; border: none; padding: 12px; border-radius: 10px; 
-            cursor: pointer; font-weight: 600; width: 100%; transition: 0.3s;
+
+        .login-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
         }
-        .login-box button:hover { transform: scale(1.05); }
+
+        .login-box button {
+            background: linear-gradient(135deg, #3b82f6, #2dd4bf);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .login-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+
+        .login-box button:active {
+            transform: translateY(1px);
+        }
 
         /* --- Main Content --- */
-        #mainContent { display: none; width: 90%; max-width: 1200px; padding: 40px 0; }
-        h1 { font-weight: 600; font-size: 2.5rem; margin-bottom: 30px; text-align: center; letter-spacing: 2px; }
+        #mainContent {
+            display: none;
+            width: 95%;
+            max-width: 1200px;
+            padding: 40px 0;
+        }
 
-        /* --- Search Bar Style --- */
+        h1.main-title {
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 5px;
+            text-align: center;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .main-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background: transparent;
+        }
+
+        p.sub-title {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* --- Tabs --- */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.03);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #2dd4bf);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* --- Search Bar --- */
         .search-container {
             display: flex;
             justify-content: center;
             margin-bottom: 40px;
         }
+
         #searchInput {
             width: 100%;
-            max-width: 500px;
-            padding: 15px 25px;
+            max-width: 550px;
+            padding: 16px 25px;
             border-radius: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 16px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             outline: none;
-            transition: 0.3s;
+            transition: 0.2s ease;
             text-align: center;
         }
+
         #searchInput::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.4);
         }
+
         #searchInput:focus {
             border-color: #3b82f6;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            background: rgba(0, 0, 0, 0.6);
         }
 
-        .card-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        
-        /* Glassmorphism Cards */
-        .card { 
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(15px);
-            padding: 30px; border-radius: 20px; 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center; transition: 0.4s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        /* --- Card Grid --- */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
-        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.1); border-color: #3b82f6; }
-        
-        .card h3 { margin-bottom: 20px; font-size: 1.3rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        
-        .button-group { display: flex; justify-content: center; gap: 12px; }
-        .open-btn { background: #3b82f6; color: white; text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; flex: 3; font-size: 14px; transition: 0.3s; }
-        .open-btn:hover { background: #2563eb; }
-        .delete-btn { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px; border-radius: 10px; cursor: pointer; flex: 1; transition: 0.3s; }
-        .delete-btn:hover { background: #ef4444; color: white; }
 
-        /* Floating Add Button */
-        .add-btn { 
-            position: fixed; bottom: 40px; right: 40px; width: 65px; height: 65px; 
-            background: linear-gradient(45deg, #10b981, #34d399); 
-            color: white; border-radius: 50%; border: none; font-size: 35px; 
-            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.4); display: none;
-            align-items: center; justify-content: center; transition: 0.3s;
+        /* Modern Dashboard Cards */
+        .card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.4));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            left: 150%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 20px rgba(59, 130, 246, 0.15);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.6));
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .card-icon.link-icon {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .card-icon.note-icon {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            color: #f8fafc;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+
+        .card p.note-preview {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-url {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: flex-start;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .open-btn {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            flex: 1;
+        }
+
+        .open-btn:hover {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .action-btn {
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .edit-btn {
+            background: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .edit-btn:hover {
+            background: rgba(245, 158, 11, 0.25);
+            border-color: rgba(245, 158, 11, 0.4);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        /* --- Floating Add Button --- */
+        .add-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            border-radius: 50%;
+            border: none;
+            font-size: 35px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
             z-index: 100;
         }
-        .add-btn:hover { transform: rotate(90deg) scale(1.1); }
 
-        /* Modern Modal */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); }
-        .modal-content { background: rgba(30, 41, 59, 0.9); margin: 12% auto; padding: 35px; width: 380px; border-radius: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
-        .modal-content input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(0,0,0,0.3); border: 1px solid #334155; border-radius: 10px; color: white; outline: none; }
-        .save-btn { background: #10b981; color: white; border: none; padding: 14px; cursor: pointer; border-radius: 10px; width: 100%; font-weight: 600; margin-top: 15px; }
+        .add-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.6);
+        }
+
+        .add-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- Modern Modals --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: #0f111a;
+            margin: 8% auto;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h3 {
+            margin-bottom: 25px;
+            color: #fff;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .modal-content input:focus,
+        .modal-content textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .modal-content textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 12px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 20px;
+            font-size: 16px;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #94a3b8;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        /* Note Viewing Modal */
+        #noteViewModal .modal-content {
+            max-width: 650px;
+            text-align: left;
+        }
+
+        #viewNoteTitle {
+            color: #3b82f6;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            word-break: break-word;
+            text-align: left;
+        }
+
+        #viewNoteContent {
+            color: #e2e8f0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 50px 20px;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            opacity: 0.4;
+        }
     </style>
 </head>
+
 <body>
 
-    <video autoplay muted loop id="bgVideo">
-        <source src="background.mp4" type="video/mp4">
-    </video>
+    <!-- Loading Interface -->
+    <div id="pageLoader">
+        <div class="loader-spinner"></div>
+        <h2 class="loader-text">HYPER PRO</h2>
+    </div>
 
+
+    <!-- Login System -->
     <div id="loginOverlay">
         <div class="login-box">
-            <h2 style="color: #3b82f6; margin-bottom: 5px;">HYPER PRO</h2>
-            <p style="color: #94a3b8; font-size: 13px; margin-bottom: 25px;">Enter Access PIN</p>
-            <input type="password" id="passInput" placeholder="****">
-            <button id="loginBtn">Unlock System</button>
-            <p id="errorMsg" style="color: #f87171; display: none; margin-top: 15px; font-size: 13px;">Authentication Failed!</p>
+            <h2 style="color: #3b82f6; margin-bottom: 5px; font-weight:700;">HYPER PRO</h2>
+            <p style="color: #94a3b8; font-size: 13px; margin-bottom: 25px;">Secure Access Required</p>
+            <input type="password" id="passInput" placeholder="Enter PIN">
+            <button id="loginBtn">Unlock Workspace</button>
+            <p id="errorMsg" style="color: #f87171; display: none; margin-top: 15px; font-size: 13px;">Authentication
+                Failed!</p>
         </div>
     </div>
 
-    <div id="mainContent">
-        <h1>Hyper Pro Dashboard</h1>
-        
+    <!-- Main Dashboard Area -->
+    <main id="mainContent">
+        <h1 class="main-title">
+            <img src="assets/logo.png" alt="Logo" class="main-logo">
+            Hyper Pro Database
+        </h1>
+        <p class="sub-title">Your secure database to manage links and notes efficiently.</p>
+
+        <!-- Dynamic Tabs -->
+        <div class="tabs-container">
+            <button class="tab-btn active" id="tabLinks">Web Links</button>
+            <button class="tab-btn" id="tabNotes">My Notes</button>
+        </div>
+
+        <!-- Search functionality -->
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search by name...">
+            <input type="text" id="searchInput" placeholder="Search links by name...">
         </div>
 
+        <!-- Dynamic Content Grid -->
         <div class="card-container" id="cardContainer"></div>
-    </div>
+    </main>
 
+    <!-- Floating Action Button -->
     <button class="add-btn" id="openModal">+</button>
 
+    <!-- Add/Edit Modal (Handles both Links and Notes) -->
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <h3 style="margin-bottom: 15px; color: #10b981;">Create New Shortcut</h3>
-            <input type="text" id="siteName" placeholder="Name (e.g. My Website)">
-            <input type="text" id="siteLink" placeholder="URL (e.g. google.com)">
-            <button class="save-btn" id="saveData">Add Card</button>
-            <button onclick="document.getElementById('myModal').style.display='none'" style="background:none; border:none; color:#94a3b8; cursor:pointer; margin-top:15px;">Dismiss</button>
+            <button id="closeModalBtn" class="close-modal-btn">✕</button>
+            <h3 id="modalTitle">Create New Link</h3>
+
+            <!-- Link Inputs -->
+            <div id="linkInputs">
+                <div class="input-group">
+                    <label>Shortcut Name</label>
+                    <input type="text" id="siteName" placeholder="e.g., My Portfolio">
+                </div>
+                <div class="input-group">
+                    <label>Website URL</label>
+                    <input type="text" id="siteLink" placeholder="e.g., google.com">
+                </div>
+            </div>
+
+            <!-- Note Inputs -->
+            <div id="noteInputs" style="display: none;">
+                <div class="input-group">
+                    <label>Note Title</label>
+                    <input type="text" id="noteTitle" placeholder="e.g., Meeting Highlights">
+                </div>
+                <div class="input-group">
+                    <label>Note Content</label>
+                    <textarea id="noteContent" placeholder="Write your notes here..."></textarea>
+                </div>
+            </div>
+
+            <button class="save-btn" id="saveData">Save to Workspace</button>
         </div>
     </div>
 
+    <!-- Read Note Modal -->
+    <div id="noteViewModal" class="modal">
+        <div class="modal-content">
+            <button onclick="document.getElementById('noteViewModal').style.display='none'"
+                class="close-modal-btn">✕</button>
+            <h3 id="viewNoteTitle"></h3>
+            <div id="viewNoteContent"></div>
+        </div>
+    </div>
+
+    <!-- App Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-        // Firebase Configuration
+        // Firebase Configuration (Original credentials preserved)
         const firebaseConfig = {
             apiKey: "AIzaSyBecNfEBSrQxurR3eYkZO5x8lStB-AojwE",
             authDomain: "hyper-pro-login-form.firebaseapp.com",
@@ -191,7 +764,12 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // UI Elements
+        // UI State Variables
+        let currentTab = 'links'; // 'links' or 'notes'
+        let editingId = null;
+        let currentDataMap = {}; // Temporarily holds current fetched data for easy editing/viewing
+
+        // Element References
         const loginBtn = document.getElementById('loginBtn');
         const passInput = document.getElementById('passInput');
         const loginOverlay = document.getElementById('loginOverlay');
@@ -200,19 +778,27 @@
         const modal = document.getElementById("myModal");
         const saveDataBtn = document.getElementById("saveData");
         const cardContainer = document.getElementById("cardContainer");
-        const searchInput = document.getElementById("searchInput"); // අලුත් Search variable එක
+        const searchInput = document.getElementById("searchInput");
 
-        // Login Functionality
+        // --- 1. Page Loader ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('pageLoader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 400);
+            }, 800);
+        });
+
+        // --- 2. Login ---
         loginBtn.onclick = () => {
             if (passInput.value === "1111") {
-                loginOverlay.style.transition = "0.5s";
                 loginOverlay.style.opacity = "0";
                 setTimeout(() => {
                     loginOverlay.style.display = "none";
                     mainContent.style.display = "block";
                     addBtn.style.display = "flex";
                     loadCards();
-                }, 500);
+                }, 300);
             } else {
                 document.getElementById('errorMsg').style.display = "block";
                 passInput.value = "";
@@ -220,68 +806,239 @@
             }
         };
 
-        // Modal Control
-        addBtn.onclick = () => modal.style.display = "block";
-
-        // Save Data 
-        saveDataBtn.onclick = async () => {
-            const name = document.getElementById("siteName").value;
-            let link = document.getElementById("siteLink").value;
-            if (name && link) {
-                if (!link.startsWith('http')) link = 'https://' + link;
-                try {
-                    await addDoc(collection(db, "links"), { name, url: link });
-                    location.reload();
-                } catch (e) { alert("Error saving: " + e.message); }
-            } else {
-                alert("Please fill all fields!");
+        // Allow 'Enter' key for login
+        passInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                loginBtn.click();
             }
-        };
+        });
 
-        // Load Cards from Firebase
-        async function loadCards() {
-            cardContainer.innerHTML = "<p>Connecting to database...</p>";
-            const querySnapshot = await getDocs(collection(db, "links"));
-            cardContainer.innerHTML = "";
-            querySnapshot.forEach((documentObj) => {
-                const data = documentObj.data();
-                const docId = documentObj.id;
-                const card = document.createElement("div");
-                card.className = "card";
-                card.innerHTML = `
-                    <h3>${data.name}</h3>
-                    <div class="button-group">
-                        <a href="${data.url}" target="_blank" class="open-btn">Launch</a>
-                        <button class="delete-btn" onclick="deleteCard('${docId}')">✕</button>
-                    </div>
-                `;
-                cardContainer.appendChild(card);
-            });
+        // --- 3. Tabs Navigation ---
+        document.getElementById('tabLinks').onclick = () => switchTab('links');
+        document.getElementById('tabNotes').onclick = () => switchTab('notes');
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tabLinks').classList.toggle('active', tab === 'links');
+            document.getElementById('tabNotes').classList.toggle('active', tab === 'notes');
+            searchInput.placeholder = tab === 'links' ? "Search links by name..." : "Search notes by title...";
+            searchInput.value = ""; // Clear search
+            loadCards();
         }
 
-        // Delete Data 
-        window.deleteCard = async (id) => {
-            if(confirm("Are you sure you want to remove this card?")) {
-                await deleteDoc(doc(db, "links", id));
-                location.reload();
+        // --- 4. Fetch & Render Data ---
+        async function loadCards() {
+            cardContainer.innerHTML = `<div class="empty-state"><div class="loader-spinner" style="margin:0 auto 15px auto;"></div><p>Fetching your ${currentTab}...</p></div>`;
+            currentDataMap = {}; // Reset local cache
+
+            try {
+                const querySnapshot = await getDocs(collection(db, currentTab));
+                cardContainer.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    cardContainer.innerHTML = `<div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <p>No ${currentTab} found. Click the + button to add one.</p>
+                    </div>`;
+                    return;
+                }
+
+                querySnapshot.forEach((documentObj) => {
+                    const data = documentObj.data();
+                    const docId = documentObj.id;
+                    currentDataMap[docId] = data; // Store in map for easy access
+
+                    const card = document.createElement("div");
+                    card.className = "card";
+
+                    if (currentTab === 'links') {
+                        card.innerHTML = `
+                            <div>
+                                <div class="card-header">
+                                    <div class="card-icon link-icon">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                    </div>
+                                    <h3>${data.name}</h3>
+                                </div>
+                                <span class="card-url">${data.url}</span>
+                            </div>
+                            <div class="button-group">
+                                <a href="${data.url}" target="_blank" class="btn open-btn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                    Launch Site
+                                </a>
+                                <button class="btn edit-btn action-btn" onclick="openEditModal('${docId}')" title="Edit">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="btn delete-btn action-btn" onclick="deleteItem('${docId}')" title="Delete">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        // Safe HTML encoding for previews
+                        const safePreview = data.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                        card.innerHTML = `
+                            <div>
+                                <div class="card-header">
+                                    <div class="card-icon note-icon">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                    </div>
+                                    <h3>${data.title}</h3>
+                                </div>
+                                <p class="note-preview">${safePreview}</p>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn open-btn" onclick="viewNote('${docId}')">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                    Read Note
+                                </button>
+                                <button class="btn edit-btn action-btn" onclick="openEditModal('${docId}')" title="Edit">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                                <button class="btn delete-btn action-btn" onclick="deleteItem('${docId}')" title="Delete">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    cardContainer.appendChild(card);
+                });
+            } catch (error) {
+                cardContainer.innerHTML = `<p style="color:#f87171; text-align:center;">Failed to load data. Please check your connection.</p>`;
+            }
+        }
+
+        // --- 5. Modal Controllers ---
+        addBtn.onclick = () => {
+            editingId = null;
+            document.getElementById('modalTitle').innerText = currentTab === 'links' ? "Add New Link" : "Create New Note";
+
+            if (currentTab === 'links') {
+                document.getElementById('linkInputs').style.display = 'block';
+                document.getElementById('noteInputs').style.display = 'none';
+                document.getElementById('siteName').value = '';
+                document.getElementById('siteLink').value = '';
+            } else {
+                document.getElementById('linkInputs').style.display = 'none';
+                document.getElementById('noteInputs').style.display = 'block';
+                document.getElementById('noteTitle').value = '';
+                document.getElementById('noteContent').value = '';
+            }
+            modal.style.display = "block";
+        };
+
+        document.getElementById('closeModalBtn').onclick = () => modal.style.display = 'none';
+
+        // Open Edit Modal
+        window.openEditModal = (id) => {
+            editingId = id;
+            const data = currentDataMap[id];
+
+            if (currentTab === 'links') {
+                document.getElementById('modalTitle').innerText = "Edit Link Details";
+                document.getElementById('linkInputs').style.display = 'block';
+                document.getElementById('noteInputs').style.display = 'none';
+                document.getElementById('siteName').value = data.name;
+                document.getElementById('siteLink').value = data.url;
+            } else {
+                document.getElementById('modalTitle').innerText = "Edit Note";
+                document.getElementById('linkInputs').style.display = 'none';
+                document.getElementById('noteInputs').style.display = 'block';
+                document.getElementById('noteTitle').value = data.title;
+                document.getElementById('noteContent').value = data.content;
+            }
+            modal.style.display = "block";
+        };
+
+        // Open Note Viewer
+        window.viewNote = (id) => {
+            const data = currentDataMap[id];
+            if (data) {
+                document.getElementById('viewNoteTitle').innerText = data.title;
+                // Preserve formatting but prevent raw HTML execution
+                const safeContent = data.content.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
+                document.getElementById('viewNoteContent').innerHTML = safeContent;
+                document.getElementById('noteViewModal').style.display = "block";
             }
         };
 
-        // අලුතින් එකතු කරපු Search Function එක
-        searchInput.addEventListener("keyup", (e) => {
+        // --- 6. Save Data (Create / Update) ---
+        saveDataBtn.onclick = async () => {
+            const originalText = saveDataBtn.innerText;
+            saveDataBtn.innerText = "Processing...";
+            saveDataBtn.disabled = true;
+
+            try {
+                if (currentTab === 'links') {
+                    const name = document.getElementById("siteName").value.trim();
+                    let link = document.getElementById("siteLink").value.trim();
+
+                    if (!name || !link) throw new Error("Please fill all fields!");
+                    if (!link.startsWith('http')) link = 'https://' + link;
+
+                    const payload = { name, url: link };
+
+                    if (editingId) {
+                        await updateDoc(doc(db, "links", editingId), payload);
+                    } else {
+                        await addDoc(collection(db, "links"), payload);
+                    }
+                } else {
+                    const title = document.getElementById("noteTitle").value.trim();
+                    const content = document.getElementById("noteContent").value.trim();
+
+                    if (!title || !content) throw new Error("Please fill all fields!");
+
+                    const payload = { title, content, updatedAt: new Date().toISOString() };
+
+                    if (editingId) {
+                        await updateDoc(doc(db, "notes", editingId), payload);
+                    } else {
+                        await addDoc(collection(db, "notes"), payload);
+                    }
+                }
+
+                modal.style.display = "none";
+                loadCards(); // Refresh display
+            } catch (e) {
+                alert(e.message);
+            } finally {
+                saveDataBtn.innerText = originalText;
+                saveDataBtn.disabled = false;
+            }
+        };
+
+        // --- 7. Delete Data ---
+        window.deleteItem = async (id) => {
+            const itemName = currentTab === 'links' ? 'shortcut' : 'note';
+            if (confirm(`Are you sure you want to permanently delete this ${itemName}?`)) {
+                try {
+                    await deleteDoc(doc(db, currentTab, id));
+                    loadCards(); // Refresh display
+                } catch (e) {
+                    alert("Error deleting item: " + e.message);
+                }
+            }
+        };
+
+        // --- 8. Search Functionality ---
+        searchInput.addEventListener("input", (e) => {
             const searchValue = e.target.value.toLowerCase();
-            const allCards = document.querySelectorAll(".card"); // සියලුම cards තෝරාගන්නවා
+            const allCards = document.querySelectorAll(".card");
 
             allCards.forEach(card => {
-                const cardName = card.querySelector("h3").innerText.toLowerCase(); // h3 tag එක ඇතුලෙ තියෙන නම
-                if(cardName.includes(searchValue)) {
-                    card.style.display = ""; // නම තියෙනවා නම් පේන්න සලස්වනවා (css grid default)
+                const title = card.querySelector("h3").innerText.toLowerCase();
+                if (title.includes(searchValue)) {
+                    card.style.display = "flex";
                 } else {
-                    card.style.display = "none"; // නැත්තම් card එක හංගනවා
+                    card.style.display = "none";
                 }
             });
         });
-        
+
     </script>
 </body>
+
 </html>
